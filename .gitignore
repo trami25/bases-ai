@@ -1,0 +1,16 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.env
+
+# Data files
+data/*.csv
+
+# Model files
+models/*.h5
+models/*.json
+models/*.txt
