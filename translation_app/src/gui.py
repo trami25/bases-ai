@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-import requests
+from app import translate_text_backend
 
 def translate_text():
     source_text = source_text_entry.get("1.0", tk.END).strip()
@@ -8,13 +8,11 @@ def translate_text():
         messagebox.showwarning("Input Error", "Please enter text to translate.")
         return
 
-    response = requests.post('http://127.0.0.1:5000/translate', json={'text': source_text})
-    if response.status_code == 200:
-        translated_text = response.json().get('translated_text', 'Translation failed.')
-        target_text_entry.delete("1.0", tk.END)
-        target_text_entry.insert(tk.END, translated_text)
-    else:
-        messagebox.showerror("Translation Error", "Failed to get translation.")
+
+    translated_text = translate_text_backend(source_text)
+
+    target_text_entry.delete("1.0", tk.END)
+    target_text_entry.insert(tk.END, translated_text)
 
 app = tk.Tk()
 app.title("Text Translation Application")
