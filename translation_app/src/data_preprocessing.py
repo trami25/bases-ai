@@ -1,11 +1,16 @@
 import nltk
-import spacy
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
 nltk.download('punkt')
-nltk.download('stompwords')
-
+nltk.download('stopwords')
+nltk.download('wordnet')
 
 def preprocess_text(text):
-    # Tokenization, removal of stop words, stemming/lemmatization
-    # Implement preprocessing steps here
-    return text
+    tokens = word_tokenize(text.lower())
+    tokens = [t for t in tokens if t.isalnum()]
+    tokens = [t for t in tokens if t not in stopwords.words('english')]
+    lemmatizer = WordNetLemmatizer()
+    tokens = [lemmatizer.lemmatize(t) for t in tokens]
+    return tokens
