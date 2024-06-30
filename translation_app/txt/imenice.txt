@@ -2006,6 +2006,8 @@ videti
 visiti
 voditi
 voleti
+voleo
+voleći
 voziti
 vrištati
 vršiti
@@ -2079,3 +2081,14 @@ zviždati
 živeti
 žonglirati
 žuriti
+sam
+si
+je
+smo
+ste
+su
+ću
+ćeš
+ćemo
+ćete
+će

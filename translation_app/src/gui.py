@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 from app import translate_text_backend
 
-
 def translate_text():
     source_text = source_text_entry.get("1.0", tk.END).strip()
     if not source_text:
@@ -10,6 +9,11 @@ def translate_text():
         return
 
     translated_text = translate_text_backend(source_text)
+
+    # Check if the translation contains unknown tokens
+    if "<UNK>" in translated_text:
+        messagebox.showinfo("Translation Warning", "Some words could not be translated.")
+
     target_text_entry.delete("1.0", tk.END)
     target_text_entry.insert(tk.END, translated_text)
 

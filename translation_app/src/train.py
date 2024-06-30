@@ -4,7 +4,6 @@ from model import TranslationModel
 from data_preprocessing import preprocess_text
 from dataset import TranslationDataset, collate_fn
 
-
 def train_model(model, dataloader, epochs, learning_rate):
     criterion = torch.nn.CrossEntropyLoss(ignore_index=1)
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -14,8 +13,7 @@ def train_model(model, dataloader, epochs, learning_rate):
         total_loss = 0
         for source, target in dataloader:
             optimizer.zero_grad()
-            source = source.long()
-            target = target.long()
+            source, target = source.long(), target.long()
 
             output = model(source)
             output = output.view(-1, output.shape[-1])
@@ -35,6 +33,7 @@ def train_model(model, dataloader, epochs, learning_rate):
         print(f'Epoch {epoch + 1}/{epochs}, Loss: {total_loss / len(dataloader)}')
 
 
+
 def build_vocab(source_file, target_file, preprocess):
     vocab = {"<UNK>": 0, "<PAD>": 1}
     files = [source_file, target_file]
@@ -42,25 +41,21 @@ def build_vocab(source_file, target_file, preprocess):
         with open(file, 'r', encoding='utf-8') as f:
             for line in f:
                 tokens = preprocess(line.strip())
-                for token in tokens:
+                for word, pos in tokens:
+                    token = f"{word}_{pos}"
                     if token not in vocab:
                         vocab[token] = len(vocab)
     return vocab
 
-
 if __name__ == '__main__':
-    source_file = 'C:\\Users\\mniko\\PycharmProjects\\bases-ai\\translation_app\\txt\\nouns.txt'
-    target_file = 'C:\\Users\\mniko\\PycharmProjects\\bases-ai\\translation_app\\txt\\imenice.txt'
+    source_file = '../txt/nouns.txt'
+    target_file = '../txt/imenice.txt'
 
     vocab = build_vocab(source_file, target_file, preprocess_text)
 
     dataset = TranslationDataset(source_file, target_file, preprocess_text, vocab)
     dataloader = DataLoader(dataset, batch_size=64, shuffle=True, collate_fn=collate_fn)
 
-    input_size = len(vocab) + 1
-    hidden_size = 256
-    output_size = len(vocab) + 1
-
-    model = TranslationModel(input_size, 256, hidden_size, output_size)
-    train_model(model, dataloader, epochs=50, learning_rate=0.001)
+    model = TranslationModel(len(vocab) + 1, 256, 256, len(vocab) + 1)
+    train_model(model, dataloader, epochs=100, learning_rate=0.001)
     torch.save(model.state_dict(), "../models/translation_model.pth")

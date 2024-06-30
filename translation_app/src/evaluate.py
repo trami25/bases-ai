@@ -26,8 +26,8 @@ def evaluate_model(model, dataloader):
     return sum(scores) / len(scores)
 
 if __name__ == "__main__":
-    source_file = 'C:\\Users\\mniko\\PycharmProjects\\bases-ai\\translation_app\\txt\\nouns.txt'
-    target_file = 'C:\\Users\\mniko\\PycharmProjects\\bases-ai\\translation_app\\txt\\imenice.txt'
+    source_file = '../txt/nouns.txt'
+    target_file = '../txt/imenice.txt'
 
     vocab = build_vocab(source_file, target_file, preprocess_text)
 

@@ -2006,6 +2006,8 @@ to see
 hang
 lead
 to love
+loved
+loving
 drive
 scream
 perform
@@ -2079,3 +2081,14 @@ to want
 to live
 juggle
 to rush
+I'm
+You're
+He's
+We're
+You're
+They're
+I'll
+You'll
+We'll
+You'll
+They'll
