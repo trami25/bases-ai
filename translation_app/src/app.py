@@ -20,7 +20,6 @@ sr_to_en_model = TranslationModel(len(sr_to_en_vocab) + 1, 256, 256, len(sr_to_e
 sr_to_en_model.load_state_dict(torch.load("../models/sr_to_en_model.pth"))
 sr_to_en_model.eval()
 
-
 def translate_text_backend(source_text):
     tokens = preprocess_text(source_text)
     token_indices = [vocab.get(f"{word}_{pos}", vocab["<UNK>"]) for word, pos in tokens]
@@ -41,7 +40,7 @@ def translate_text_backend(source_text):
         if pos == 'PUNCTUATION':
             translated_tokens.append(word)
         else:
-            translated_tokens.append(idx_to_word.get(idx, "<UNK>"))
+            translated_tokens.append(idx_to_word.get(idx, word))  # Preserve original word if unknown
 
     translated_text = ' '.join(translated_tokens)
 
@@ -72,12 +71,13 @@ def translate_text_sr_to_en(source_text):
         if pos == 'PUNCTUATION':
             translated_tokens.append(word)
         else:
-            translated_tokens.append(idx_to_word.get(idx, "<UNK>"))
+            translated_tokens.append(idx_to_word.get(idx, word))  # Preserve original word if unknown
 
     translated_text = ' '.join(translated_tokens)
     for punct in ['.', ',', '!', '?', ':', ';', '-', '(', ')', '"', "'"]:
         translated_text = translated_text.replace(f" {punct}", punct)
 
     return translated_text
+
 
 

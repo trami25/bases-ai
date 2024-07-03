@@ -50,17 +50,14 @@ def preprocess_text(text):
 def preprocess_text_sr(text):
     tokens = word_tokenize(text.lower())
 
-    # Filtrirajte tokene
+    # Filter tokens
     tokens = [t for t in tokens if t.isalnum() or t in ['?', '!', '.', ',', ':', ';', '-', '(', ')', '"', "'"]]
 
-    # Uklonite stop riječi
-    #tokens = [t for t in tokens if t not in srpske_stop_rijeci]
-
-    # Stemizacija tokena
+    # Stem tokens
     stemmer_sr = stemmer('serbian')
     tokens = [stemmer_sr.stemWord(t) for t in tokens]
 
-    # # Procesirani tokeni
-    processed_tokens = [(word, 'NOUN') for word in tokens]  # Postavljamo sve na NOUN jer nema POS tagiranja za srpski
+    # Processed tokens
+    processed_tokens = [(word, 'NOUN' if word.isalnum() else 'PUNCTUATION') for word in tokens]
 
     return processed_tokens
